@@ -1,0 +1,23 @@
+---
+- hosts: all
+  tasks:
+    - name: Check the date on the server
+      command: date
+    - name: Ensure NTP is running
+      service: name=ntpd state=started enabled=yes
+      become: true
+    - name: Checking User Credentials
+      shell: whoami
+    - name: Setting Write permisions to Others for /etc folder
+      file: 
+        path: /etc
+        state: directory
+        mode: o=rwX
+      become: true  
+    - name: Setting NTP Server 1
+      lineinfile: dest=/etc/ntp.conf insertafter="# list servers" line="server CSCDC8NWH003.amer.globalcsc.net"
+    - name: Setting NTP Server 2
+      lineinfile: dest=/etc/ntp.conf insertafter="# list servers" line="server CSCDC8NOI001.asiapac.globalcsc.net"
+    - name: Restart NTP daemon
+      service: name=ntpd state=restarted
+      become: true
