@@ -3,7 +3,6 @@
 
   import time
 
-# Manage the state of program "httpd" to be in "started" state.
 - monit: name=marimba state=started
 
 def main():
